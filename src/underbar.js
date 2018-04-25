@@ -109,18 +109,37 @@
   _.uniq = function(array, isSorted, iterator) {
     iterator = iterator || _.identity;
     isSorted = isSorted || false;
-    if (isSorted) {
-      
-    
-    } else {
-      var iteratorArr = [];
-      var copyArray = array.slice();
-      _.each(copyArray, function(value){
-        iteratorArr.push(iterator(value));
-      });
-      
 
+    var store = []
+    var iteratorArr = [];
+    _.each(array, function(value) {
+      iteratorArr.push(iterator(value));
+    });
+
+
+    if (isSorted) {
+      //iterate through both arrays
+      //check whether the current value is equal to the prev val
+      //if not push the index from array into a new array
+
+      _.each(array, function(value, i){
+        if (i === 0) {
+          store.push(array[0]);
+        } else {
+          if (iteratorArr[i] !== iteratorArr[i - 1]) {
+            store.push(array[i]);
+          }
+        } 
+      });
+
+    } else {
+      _.each(iteratorArr, function(value, i) {
+        if ( store.indexOf(value) === -1 ) {
+          store.push(array[i]);
+        }
+      });
     }
+    return store;
   };
 
 
